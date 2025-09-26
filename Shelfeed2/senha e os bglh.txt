@@ -1,0 +1,6 @@
+host: db.emizkrlbmchylwtgmrmr.supabase.co
+port: 5432
+database: postgres
+user: postgres
+
+Shelfeed35_
