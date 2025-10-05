@@ -36,3 +36,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 ?>
+
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="login-container">
+    <h2>Registro</h2>
+
+    <?php
+    session_start();
+    if (isset($_SESSION['erro'])) {
+        echo '<div style="color:red;margin-bottom:20px;">'.$_SESSION['erro'].'</div>';
+        unset($_SESSION['erro']);
+    }
+    if (isset($_SESSION['sucesso'])) {
+        echo '<div style="color:green;margin-bottom:20px;">'.$_SESSION['sucesso'].'</div>';
+        unset($_SESSION['sucesso']);
+    }
+    ?>
+
+    <form action="registro.php" method="POST">
+      <label>Email:</label>
+      <input type="email" name="email" required>
+      <label>Nome de usuário:</label>
+      <input type="text" name="username" required>
+      <label>Senha:</label>
+      <input type="password" name="senha" required>
+      <label>Repita a senha:</label>
+      <input type="password" name="senha2" required>
+      <button type="submit">Registrar-se</button>
+    </form>
+    <p>Já possui cadastro? <a href="login.php">Clique aqui</a></p>
+  </div>
+</body>
+</html>

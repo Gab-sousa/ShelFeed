@@ -23,3 +23,18 @@ if (isset($_POST['nomeLivro'])) {
     echo "<p>Por favor, envie o nome do livro.</p>";
 }
 ?>
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Livro</title>
+</head>
+<body>
+    <h1>Buscar Livro</h1>
+    <form method="POST" action="buscar.php">
+        <input type="text" name="nomeLivro" placeholder="Digite o nome do livro" required>
+        <button type="submit">Buscar</button>
+    </form>
+</body>
+</html>
