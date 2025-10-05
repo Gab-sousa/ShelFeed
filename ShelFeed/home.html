@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Inicial</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #fff;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    nav {
+      background: #9C8981;
+      width: 60%;
+      border-radius: 90px;
+      display: flex;
+      justify-content: space-around;
+      padding: 20px 0;
+      color: #fff;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* BANNER */
+    .banner {
+      background: #9C8981;
+      color: #fff;
+      width: 40%;
+      border-radius: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 60px;
+    }
+
+    .banner-text {
+      width: 50%;
+      font-size: 2rem;
+    }
+
+    .banner img {
+      width: 300px;
+      border-radius: 10px;
+      filter: drop-shadow(5px 5px 10px rgba(43, 43, 43, 0.445))
+    }
+
+    /* TOP 3 */
+    .top3 {
+      background: #9C8981;
+      width: 40%;
+      border-radius: 30px;
+      padding: 70px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .livros {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+    }
+
+    .livro {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .livro-bar {
+      width: 40px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .livro1 { height: 120px; background: #c8a784; }
+    .livro2 { height: 100px; background: #6f6557; }
+    .livro3 { height: 110px; background: #e29854; }
+
+    .estrela {
+      color: gold;
+      font-size: 20px;
+    }
+
+    /* AVALIAÇÕES */
+    .avaliacoes {
+      background: #9C8981;
+      width: 60%;
+      border-radius: 30px;
+      padding: 60px;
+      color: #fff;
+    }
+
+    .avaliacao {
+      display: flex;
+      align-items: center;
+      background: #e2e2e2;
+      color: #333;
+      border-radius: 30px;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .bolinha {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+ 
+    .cor1 { background: #e0a7a7; }
+    .cor2 { background: #a7a7a7; }
+    .cor3 { background: #c2d3d6; }
+    h2 {
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="#">Home 🏠</a>
+    <a href="#">Em alta 🔥</a>
+    <a href="#">Entrar ⎆</a>
+    <a href="#">Registrar-se ✎</a>
+    <a href="#">estante</a>
+    <a href="#">em alta</a>
+    <a href="#">criar livro</a>
+  </nav>
+
+  <!-- BANNER -->
+  <section class="banner">
+    <div class="banner-text">
+      <p>Encontre o próximo livro que vai marcar sua vida.</p>
+    </div>
+    <img src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=200" alt="Livro">
+  </section>
+
+  <!-- TOP 3 -->
+  <section class="top3">
+    <h2>Top 3 livros do mês</h2>
+    <div class="livros">
+      <div class="livro">
+        <div class="livro-bar livro2"></div>
+        <p>Livro 2</p>
+        <p class="estrela">★ 4.8</p>
+      </div>
+      <div class="livro">
+        <div class="livro-bar livro1"></div>
+        <p>Livro 1</p>
+        <p class="estrela">★ 5</p>
+      </div>
+      <div class="livro">
+        <div class="livro-bar livro3"></div>
+        <p>Livro 3</p>
+        <p class="estrela">★ 4.6</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- AVALIAÇÕES -->
+  <section class="avaliacoes">
+    <h2>Algumas avaliações do top 3 semanal</h2>
+
+    <div class="avaliacao">
+      <div class="bolinha cor1"></div>
+      <p>gostei muito do livro 1 pois o mesmo me inspirou a ser alguém melhor</p>
+    </div>
+
+    <div class="avaliacao">
+      <div class="bolinha cor2"></div>
+      <p>achei o livro 2 muito interessante, o plot principal foi bem construído e me prendeu bastante</p>
+    </div>
+
+    <div class="avaliacao">
+      <div class="bolinha cor3"></div>
+      <p>o livro 3 foi um dos melhores livros que já li na minha vida. consegui me conectar facilmente com os personagens da história</p>
+    </div>
+
+  </section>
+
+</body>
+</html>
+```
