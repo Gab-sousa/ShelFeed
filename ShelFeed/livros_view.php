@@ -1,6 +1,11 @@
 <?php
 require 'supabase.php';
 
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    die("Você precisa estar logado para comentar.");
+}
+
 $id = $_GET['id'] ?? null;
 if (!$id) {
     die("Livro não encontrado!");
@@ -11,15 +16,20 @@ $livro = supabaseRequest("livros?id=eq.$id")[0] ?? null;
 
 // Novo comentário
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comentario'])) {
-    $comentario = $_POST['comentario'];
-    $avaliacao = $_POST['avaliacao'];
+    $comentario = substr(trim($_POST['comentario']), 0, 500);
+    $avaliacao = max(0, min(5, (int)$_POST['avaliacao']));
 
     $data = [
         "livro_id" => $id,
         "comentario" => $comentario,
-        "avaliacao" => (int)$avaliacao
+        "avaliacao" => $avaliacao,
+        "user_id" => $_SESSION['user_id'],
+        "username" => $_SESSION['username']
     ];
     supabaseRequest("comentarios", "POST", $data);
+
+    header("Location: livros_view.php?id=$id"); // evita reenvio
+    exit();
 }
 
 // Buscar comentários
@@ -52,11 +62,11 @@ $comentarios = supabaseRequest("comentarios?livro_id=eq.$id");
     <br>
     <?php if ($comentarios): ?>
         <?php foreach ($comentarios as $c): ?>
-            <div style="border:1px solid #ddd; padding:10px; margin:10px;">
-                <p><?= htmlspecialchars($c['comentario']) ?></p>
-                <p>⭐ <?= $c['avaliacao'] ?>/5</p>
-            </div>
-        <?php endforeach; ?>
+    <div style="border:1px solid #ddd; padding:10px; margin:10px;">
+        <p><strong><?= htmlspecialchars($c['username'] ?? 'Anônimo') ?>:</strong> <?= htmlspecialchars($c['comentario']) ?></p>
+        <p>⭐ <?= $c['avaliacao'] ?>/5</p>
+    </div>
+<?php endforeach; ?>
     <?php else: ?>
         <p>Nenhum comentário ainda.</p>
     <?php endif; ?>

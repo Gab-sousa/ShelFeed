@@ -2,43 +2,66 @@
 session_start();
 require 'supabase.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $email = $_POST['email'];
-    $username = $_POST['username'];
-    $senha = $_POST['senha'];
-    $senha2 = $_POST['senha2'];
 
-    if ($senha !== $senha2) {
+$email_val = $username_val = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = strtolower(trim($_POST['email']));
+    $username = trim($_POST['username'] ?? '');
+    $senha = $_POST['senha'] ?? '';
+    $senha2 = $_POST['senha2'] ?? '';
+
+    // manter valores para repopular o form em caso de erro
+    $email_val = $email;
+    $username_val = $username;
+
+    // validações básicas
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $erro = "Email inválido.";
+    } elseif ($senha !== $senha2) {
         $erro = "As senhas não coincidem!";
     } elseif (strlen($senha) < 6) {
         $erro = "A senha deve ter pelo menos 6 caracteres!";
+    } elseif (empty($username) || strlen($username) < 3) {
+        $erro = "Nome de usuário inválido (mín 3 caracteres).";
     } else {
-        // Verifica se email já existe
-        $existing = supabaseRequest("usuarios?email=eq.$email");
+        // checar email existente (valor entre aspas e urlencoded)
+        $endpointEmail = 'usuarios?email=eq.' . urlencode('"' . $email . '"');
+        $existing = supabaseRequest($endpointEmail);
+
         if (!empty($existing)) {
             $erro = "Este email já está cadastrado!";
         } else {
-            // Verifica se username já existe
-            $existingUser = supabaseRequest("usuarios?username=eq.$username");
+            // checar username existente
+            $endpointUser = 'usuarios?username=eq.' . urlencode('"' . $username . '"');
+            $existingUser = supabaseRequest($endpointUser);
+
             if (!empty($existingUser)) {
                 $erro = "Este nome de usuário já está em uso!";
             } else {
-                // Cria usuário
+                // cria usuário
                 $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
-                $novo = supabaseRequest("usuarios", "POST", [
+                $payload = [
                     "email" => $email,
                     "username" => $username,
                     "password" => $senha_hash
-                ]);
-                $sucesso = "Cadastro realizado com sucesso! <a href='login.php'>Faça login aqui</a>";
+                ];
+
+                $novo = supabaseRequest("usuarios", "POST", $payload);
+
+                // supabaseRequest retorna representação por causa do header Prefer: return=representation
+                if ($novo && is_array($novo) && count($novo) > 0) {
+                    $_SESSION['sucesso'] = "Cadastro realizado com sucesso! Faça login.";
+                    header('Location: login.php');
+                    exit();
+                } else {
+                    $erro = "Erro ao cadastrar. Tente novamente mais tarde.";
+                }
             }
         }
     }
 }
 ?>
-
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -52,22 +75,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <h2>Registro</h2>
 
     <?php
-    session_start();
-    if (isset($_SESSION['erro'])) {
-        echo '<div style="color:red;margin-bottom:20px;">'.$_SESSION['erro'].'</div>';
-        unset($_SESSION['erro']);
+    // Mensagens vindas de redirect ou do próprio processamento
+    if (!empty($erro)) {
+        echo '<div style="color:red;margin-bottom:20px;">' . htmlspecialchars($erro) . '</div>';
     }
     if (isset($_SESSION['sucesso'])) {
-        echo '<div style="color:green;margin-bottom:20px;">'.$_SESSION['sucesso'].'</div>';
+        echo '<div style="color:green;margin-bottom:20px;">' . htmlspecialchars($_SESSION['sucesso']) . '</div>';
         unset($_SESSION['sucesso']);
     }
     ?>
 
     <form action="registro.php" method="POST">
       <label>Email:</label>
-      <input type="email" name="email" required>
+      <input type="email" name="email" required value="<?php echo htmlspecialchars($email_val); ?>">
       <label>Nome de usuário:</label>
-      <input type="text" name="username" required>
+      <input type="text" name="username" required value="<?php echo htmlspecialchars($username_val); ?>">
       <label>Senha:</label>
       <input type="password" name="senha" required>
       <label>Repita a senha:</label>
